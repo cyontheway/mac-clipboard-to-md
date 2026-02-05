@@ -1,4 +1,4 @@
-# Mac Clipboard to Markdown
+# Mac Clipboard to Markdown 😊
 
 [中文](./README.zh.md) | [English](./README.en.md)
 

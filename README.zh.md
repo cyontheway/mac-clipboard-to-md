@@ -1,4 +1,4 @@
-# Mac 剪贴板保存到 Markdown
+# Mac 剪贴板保存到 Markdown 😊
 
 两款Mac Automator工具，主要使用Apple Script和快捷键，将剪贴板内容保存至Obsidian或其他Markdown笔记应用。
 
