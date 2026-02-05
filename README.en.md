@@ -1,6 +1,6 @@
 # Mac Clipboard to Markdown
 
-Two AppleScript tools to quickly save clipboard content to Obsidian or other Markdown note-taking apps using Mac Automator.
+Two Mac Automator tools, primarily using Apple Script and keyboard shortcuts, to save clipboard content to Obsidian or other Markdown note-taking applications.
 
 ## Scripts
 

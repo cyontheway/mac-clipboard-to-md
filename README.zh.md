@@ -1,6 +1,6 @@
 # Mac 剪贴板保存到 Markdown
 
-两个 AppleScript 脚本，通过 Mac「自动操作」快速保存剪贴板内容到 Obsidian 或其他 Markdown 笔记软件。
+两款Mac Automator工具，主要使用Apple Script和快捷键，将剪贴板内容保存至Obsidian或其他Markdown笔记应用。
 
 ## 脚本说明
 
