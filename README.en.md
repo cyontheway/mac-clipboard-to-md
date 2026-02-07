@@ -95,10 +95,7 @@ Or place notes in locations without special restrictions (e.g., `~/Notes/`).
 ### 3. Shortcut not working in some apps
 
 **Possible causes**:
-- **Shortcut conflict**: `Ctrl+Cmd+A/I/N` may be used by system or other apps
-  - `Cmd+A` = Select All
-  - `Cmd+I` = Italic
-  - `Cmd+N` = New
+- **Shortcut conflict**: Some shortcuts may be used by system or other apps
 
 **Suggestion**: Choose uncommon combinations. Check System Settings → Keyboard → Keyboard Shortcuts for occupied shortcuts.
 
