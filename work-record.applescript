@@ -44,18 +44,16 @@ on run {input, parameters}
             set linesList to text items of fileContent
             set AppleScript's text item delimiters to ""
 
-            -- 动态查找 frontmatter 结束位置（找第二个 "---"）
+            -- 动态查找 frontmatter 结束位置（第一行必须是 "---" 才算有 frontmatter）
             set fmEndLine to 0
-            set dashCount to 0
-            repeat with i from 1 to (count of linesList)
-                if item i of linesList is "---" then
-                    set dashCount to dashCount + 1
-                    if dashCount is 2 then
+            if item 1 of linesList is "---" then
+                repeat with i from 2 to (count of linesList)
+                    if item i of linesList is "---" then
                         set fmEndLine to i
                         exit repeat
                     end if
-                end if
-            end repeat
+                end repeat
+            end if
 
             -- 如果没找到完整的 frontmatter，新内容直接拼到最前面
             if fmEndLine is 0 then
