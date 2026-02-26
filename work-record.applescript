@@ -44,26 +44,36 @@ on run {input, parameters}
             set linesList to text items of fileContent
             set AppleScript's text item delimiters to ""
 
-            -- 确保文件至少有9行
-            if (count of linesList) < 9 then
-                -- 如果不足9行，直接追加到末尾
-                set finalContent to fileContent & return & contentToWrite
-            else
-                -- 提取前8行（索引1到8）
-                set headerLines to {}
-                repeat with i from 1 to 8
-                    if i ≤ (count of linesList) then
-                        set end of headerLines to item i of linesList
+            -- 动态查找 frontmatter 结束位置（找第二个 "---"）
+            set fmEndLine to 0
+            set dashCount to 0
+            repeat with i from 1 to (count of linesList)
+                if item i of linesList is "---" then
+                    set dashCount to dashCount + 1
+                    if dashCount is 2 then
+                        set fmEndLine to i
+                        exit repeat
                     end if
+                end if
+            end repeat
+
+            -- 如果没找到完整的 frontmatter，新内容直接拼到最前面
+            if fmEndLine is 0 then
+                set finalContent to contentToWrite & fileContent
+            else
+                -- 提取 frontmatter 部分（到第二个 --- 为止）
+                set headerLines to {}
+                repeat with i from 1 to fmEndLine
+                    set end of headerLines to item i of linesList
                 end repeat
 
-                -- 提取第9行及之后的内容
+                -- 提取 frontmatter 之后的内容
                 set bodyLines to {}
-                repeat with i from 9 to (count of linesList)
+                repeat with i from (fmEndLine + 1) to (count of linesList)
                     set end of bodyLines to item i of linesList
                 end repeat
 
-                -- 重新组合：前8行 + 新内容 + 剩余内容
+                -- 组合 frontmatter
                 set headerText to ""
                 repeat with i from 1 to (count of headerLines)
                     set headerText to headerText & item i of headerLines
@@ -72,6 +82,7 @@ on run {input, parameters}
                     end if
                 end repeat
 
+                -- 组合正文
                 set bodyText to ""
                 if (count of bodyLines) > 0 then
                     repeat with i from 1 to (count of bodyLines)
@@ -82,11 +93,11 @@ on run {input, parameters}
                     end repeat
                 end if
 
-                -- 组合最终内容
+                -- 最终组合：frontmatter + 新内容 + 旧正文
                 if bodyText is not "" then
-                    set finalContent to headerText & return & contentToWrite & bodyText
+                    set finalContent to headerText & return & return & contentToWrite & bodyText
                 else
-                    set finalContent to headerText & return & contentToWrite
+                    set finalContent to headerText & return & return & contentToWrite
                 end if
             end if
 

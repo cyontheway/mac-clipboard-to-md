@@ -6,13 +6,15 @@ Two Mac Automator tools, primarily using Apple Script and keyboard shortcuts, to
 
 ### 1. work-record.applescript
 
-**Function**: Append clipboard content to `Work record.md`, inserting at line 9 (preserving YAML frontmatter).
+**Function**: Append clipboard content to `Work record.md`, inserting after YAML frontmatter (dynamically located, supports any frontmatter length).
 
 **Features**:
 - Auto-adds timestamp (format: 2026-02-05 10:30:00)
 - Creates reverse chronological timeline (newest on top)
+- Dynamically locates frontmatter end by scanning for `---` markers, immune to line count changes
 - UTF-8 encoding protection for non-ASCII characters
 - Auto-creates file with frontmatter template if not exists
+- Gracefully handles files without frontmatter (inserts at top)
 
 **Use case**: Quick capture of work snippets and temporary notes.
 

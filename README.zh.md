@@ -6,13 +6,15 @@
 
 ### 1. work-record.applescript
 
-**功能**：将剪贴板内容追加到 `Work record.md`，自动插入到第 9 行（保留 YAML frontmatter）。
+**功能**：将剪贴板内容追加到 `Work record.md`，自动插入到 YAML frontmatter 之后（动态定位，不限 frontmatter 行数）。
 
 **特点**：
 - 自动添加时间戳（格式：2026-02-05 10:30:00）
 - 形成倒序时间线（新内容在最上面）
+- 动态查找 `---` 标记定位 frontmatter 结束位置，不受行数变化影响
 - UTF-8 编码保护，中文不乱码
 - 文件不存在时自动创建带 frontmatter 的模板
+- 无 frontmatter 的文件也兼容（直接插入到文件开头）
 
 **适用场景**：快速记录工作中的零散信息、临时笔记。
 
