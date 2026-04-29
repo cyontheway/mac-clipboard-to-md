@@ -5,10 +5,13 @@
 ### Added
 - 新增 `SKILL.md`：Claude Code 交互式安装向导，支持 AskUserQuestion 弹窗式问答
 - 新增 `scripts/install.py`：自动安装器，通过 plistlib 构造 `.workflow` 包，无需手动操作 Automator
-- 新增三种安装方式：自动安装 / 手动安装 / AI 辅助
+- install.py 新增交互模式：无参数运行时通过问答引导安装
+- 新增 `CHANGELOG.md`：版本历史记录
+- 新增三种安装方式：自动安装（参数模式）/ 自动安装（交互模式）/ 手动安装 / AI 辅助
 
 ### Changed
 - Applescript 路径占位符统一为 `Work record.md`
+- 更新中英文文档
 
 ---
 
