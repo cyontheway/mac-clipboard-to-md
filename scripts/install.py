@@ -19,9 +19,9 @@ SERVICES_DIR = os.path.expanduser("~/Library/Services")
 TOOLS = {
     "work-record": {
         "template": os.path.join(SKILL_DIR, "work-record.applescript"),
-        "service_name": "保存到 Study Record",
-        "placeholder_path": "/Users/你的用户名/Documents/Study record.md",
-        "description": "静默追加到 Study record.md",
+        "service_name": "保存到 Work Record",
+        "placeholder_path": "/Users/你的用户名/Documents/Work record.md",
+        "description": "静默追加到 Work record.md",
     },
     "brain-dump": {
         "template": os.path.join(SKILL_DIR, "brain-dump.applescript"),
