@@ -1,118 +1,133 @@
-# Mac 剪贴板保存到 Markdown 😊
+# Mac 剪贴板保存到 Markdown
 
-两款Mac Automator工具，主要使用Apple Script和快捷键，将剪贴板内容保存至Obsidian或其他Markdown笔记应用。
+两款 macOS Automator 工具，使用 AppleScript 和快捷键将剪贴板内容保存至 Markdown 笔记。
+
+---
 
 ## 脚本说明
 
 ### 1. work-record.applescript
 
-**功能**：将剪贴板内容追加到 `Work record.md`，自动插入到 YAML frontmatter 之后（动态定位，不限 frontmatter 行数）。
+**功能**：将剪贴板内容追加到 `Work record.md`，自动插入到 YAML frontmatter 之后。
 
 **特点**：
 - 自动添加时间戳（格式：2026-02-05 10:30:00）
-- 形成倒序时间线（新内容在最上面）
-- 动态查找 `---` 标记定位 frontmatter 结束位置，不受行数变化影响
+- 倒序时间线（新内容在最上面）
+- 动态定位 frontmatter 结束位置，不受行数变化影响
 - UTF-8 编码保护，中文不乱码
 - 文件不存在时自动创建带 frontmatter 的模板
-- 无 frontmatter 的文件也兼容（直接插入到文件开头）
+- 无 frontmatter 的文件也兼容
 
 **适用场景**：快速记录工作中的零散信息、临时笔记。
 
----
-
 ### 2. brain-dump.applescript
 
-**功能**：带交互对话框的版本，保存到 `brain dump/` 文件夹。
+**功能**：带交互对话框，保存到 `brain dump/` 文件夹。
 
 **特点**：
-- 可自定义文件名（可选，默认使用时间戳）
-- 可添加多个标签
-- 可添加描述
+- 自定义文件名（可选，默认使用时间戳）
+- 多标签支持
+- 可选描述字段
 - 自动生成 YAML frontmatter
 
 **适用场景**：需要分类归档的内容、带标签的笔记。
 
 ---
 
-## 使用方法
+## 安装方法
 
-### 第一步：放置脚本文件
+### 方式一：自动安装（推荐）
 
-1. 修改脚本中的文件路径：
-   - `work-record.applescript`：修改 `filePath` 变量
-   - `brain-dump.applescript`：修改 `folderPath` 变量
+```bash
+# 安装 work-record（修改路径为你想要的）
+python3 scripts/install.py --tool work-record --path "~/Documents/Work record.md"
 
-2. 将修改后的脚本保存到本地（例如 `~/Scripts/`）
+# 安装 brain-dump
+python3 scripts/install.py --tool brain-dump --path "~/Documents/brain dump/"
 
-### 第二步：创建自动操作
+# 两个一起装
+python3 scripts/install.py --tool all --work-record-path "~/Documents/Work record.md" --brain-dump-path "~/Documents/brain dump/"
+```
 
-1. 打开 Mac「自动操作」App（Automator）
+会自动创建 `.workflow` 包到 `~/Library/Services/`，刷新 Finder 后即可在「系统设置 → 键盘 → 键盘快捷键 → 服务」中绑定快捷键。
+
+### 方式二：手动安装
+
+#### 第一步：修改脚本路径
+
+修改 `work-record.applescript` 中的 `filePath` 和 `brain-dump.applescript` 中的 `folderPath` 为你的实际路径。
+
+#### 第二步：创建 Automator 快速操作
+
+1. 打开「自动操作」App（Automator）
 2. 文件 → 新建 → 选择「快速操作」
-3. 在顶部设置：
+3. 顶部设置：
    - **工作流程收到**：选择「没有输入」
    - **位于**：选择「任何应用程序」
 4. 左侧找到「运行 AppleScript」，拖到右侧工作区
-5. 删除默认代码，粘贴脚本内容
-6. 保存（例如命名为「保存到 Work Record」）
+5. 删除默认代码，粘贴对应脚本内容
+6. 保存（work-record 保存为「保存到 Work Record」，brain-dump 保存为「Brain Dump」）
 
-### 第三步：设置快捷键
+#### 第三步：设置快捷键
 
 1. 打开「系统设置」→「键盘」→「键盘快捷键」
-2. 左侧选择「服务」，右侧滚动到「通用」分类
-3. 在列表中找到你保存的快速操作名称（如果找不到，展开「通用」查看全部）
-4. 点击右侧「无」或快捷键区域，按下你想设置的键位组合
-5. 关闭设置窗口，快捷键立即生效
+2. 左侧选「服务」，右侧滚动到「通用」
+3. 找到刚保存的快速操作名称，点击右侧空白区域按下快捷键
+
+推荐：work-record → `Ctrl+Cmd+Shift+V`，brain-dump → `Ctrl+Opt+Cmd+V`
+
+### 方式三：AI 辅助安装
+
+如果你使用 Claude Code，可直接触发 skill 交互式安装：
+
+```
+/剪贴板转笔记
+```
+
+或说出触发词（如「安装剪贴板工具」「设置 brain dump」），AI 会通过问答引导你完成安装。
+
+---
+
+## 目录结构
+
+```
+mac-clipboard-to-md/
+├── SKILL.md                   ← AI 辅助安装向导（Claude Code 专用）
+├── scripts/
+│   └── install.py             ← 自动安装器
+├── work-record.applescript    ← 静默模式脚本模板
+├── brain-dump.applescript     ← 交互模式脚本模板
+├── README.md                  ← 项目说明（中英入口）
+├── README.zh.md               ← 中文详细说明
+├── README.en.md               ← English documentation
+└── LICENSE                    ← MIT 许可证
+```
 
 ---
 
 ## 常见问题
 
-### 1. 在 Spotlight（Command+空格）里复制后按快捷键没反应
+### 1. 快捷键在某些应用里不生效
 
-**原因**：Spotlight 搜索框是一个特殊的系统模态窗口，会拦截全局快捷键。
+**原因**：快捷键冲突或系统模态窗口拦截。
 
-**解决**：先按 Esc 退出 Spotlight，再按快捷键。
+**解决**：选择不常用的组合（如 `Ctrl+Cmd+Shift+V`），避免 `Cmd+C/V/A` 等常用键。Spotlight 等模态窗口需先退出。
 
----
+### 2. 报错 `Operation not permitted`
 
-### 2. 在终端运行时报错 `Operation not permitted`
+**原因**：macOS「完全磁盘访问权限」限制。
 
-错误示例：
-```
-cat: /Users/.../Work record.md: Operation not permitted
-```
-
-**原因**：macOS 的「完全磁盘访问权限」限制。终端（或自动操作）没有被授权访问 Documents/Downloads 等敏感文件夹。
-
-**解决步骤**：
+**解决**：
 1. 打开「系统设置」→「隐私与安全性」→「完全磁盘访问权限」
-2. 点击左下角锁图标解锁
-3. 添加「终端」（Terminal.app）和「自动操作」（Automator.app）
-4. 重启这两个应用
+2. 解锁后添加「自动操作」（Automator.app）
+3. 重启 Automator
 
-或者把笔记文件放在不需要特殊权限的位置（如 `~/Notes/`）。
+### 3. 中文乱码
 
----
-
-### 3. 快捷键在某些应用里不生效
-
-**可能原因**：
-- **快捷键冲突**：有些快捷键可能已被系统或其他应用占用
-
-**建议**：选择不常用的组合，避免与系统或常用应用冲突。可以在「系统设置」→「键盘」→「键盘快捷键」中查看已被占用的组合。
-
-**另一个原因**：某些应用（如 Spotlight、屏幕保护、登录窗口）会阻止全局快捷键。
-
----
-
-## 注意事项
-
-- **编码问题**：脚本已添加 `export LANG=en_US.UTF-8`，防止中文乱码
-- **路径问题**：确保修改后的路径在你电脑上是存在的，且应用有访问权限
-- **权限问题**：首次运行可能需要授权「自动操作」访问文件和文件夹
+脚本已内置 `export LANG=en_US.UTF-8`，如仍有乱码请检查系统 locale 设置。
 
 ---
 
 ## License
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
+MIT License — 详见 [LICENSE](LICENSE) 文件

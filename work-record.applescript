@@ -22,8 +22,8 @@ on run {input, parameters}
     -- 构建要写入的内容
     set contentToWrite to "# " & timeStamp & return & theClipboard & return & return & return
 
-    -- 设置文件路径（请修改为你自己的路径）
-    set filePath to "/Users/你的用户名/Documents/Work record.md"
+    -- 文件路径由 install.py 自动替换
+    set filePath to "/Users/你的用户名/Documents/Study record.md"
 
     try
         -- 检查文件是否存在
@@ -104,7 +104,7 @@ on run {input, parameters}
             do shell script "export LANG=en_US.UTF-8; printf '%s' " & escapedContent & " > " & quoted form of filePath
         else
             -- 文件不存在，直接创建（包含属性行）
-            set defaultHeader to "---" & return & "title: Work Record" & return & "created: " & timeStamp & return & "updated: " & timeStamp & return & "tags: []" & return & "---" & return & return
+            set defaultHeader to "---" & return & "title: Study Record" & return & "created: " & timeStamp & return & "updated: " & timeStamp & return & "tags: []" & return & "---" & return & return
             set finalContent to defaultHeader & contentToWrite
             set escapedContent to quoted form of finalContent
             do shell script "export LANG=en_US.UTF-8; printf '%s' " & escapedContent & " > " & quoted form of filePath

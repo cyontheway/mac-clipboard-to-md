@@ -1,118 +1,110 @@
-# Mac Clipboard to Markdown 😊
+# Mac Clipboard to Markdown
 
-Two Mac Automator tools, primarily using Apple Script and keyboard shortcuts, to save clipboard content to Obsidian or other Markdown note-taking applications.
+Two macOS Automator tools using AppleScript and keyboard shortcuts to save clipboard content to Markdown notes.
+
+---
 
 ## Scripts
 
 ### 1. work-record.applescript
 
-**Function**: Append clipboard content to `Work record.md`, inserting after YAML frontmatter (dynamically located, supports any frontmatter length).
+**Function**: Append clipboard content to `Work record.md`, inserting after YAML frontmatter.
 
 **Features**:
-- Auto-adds timestamp (format: 2026-02-05 10:30:00)
-- Creates reverse chronological timeline (newest on top)
-- Dynamically locates frontmatter end by scanning for `---` markers, immune to line count changes
-- UTF-8 encoding protection for non-ASCII characters
-- Auto-creates file with frontmatter template if not exists
-- Gracefully handles files without frontmatter (inserts at top)
+- Auto timestamp (format: 2026-02-05 10:30:00)
+- Reverse chronological order (newest on top)
+- Dynamic frontmatter detection
+- UTF-8 encoding protection
+- Auto-creates file with frontmatter template if missing
+- Graceful fallback for files without frontmatter
 
 **Use case**: Quick capture of work snippets and temporary notes.
 
----
-
 ### 2. brain-dump.applescript
 
-**Function**: Interactive version with dialog boxes, saves to `brain dump/` folder.
+**Function**: Interactive dialog version, saves to `brain dump/` folder.
 
 **Features**:
 - Custom filename (optional, defaults to timestamp)
 - Multiple tags support
-- Optional description field
-- Auto-generates YAML frontmatter
+- Optional description
+- Auto-generated YAML frontmatter
 
 **Use case**: Categorized notes with metadata.
 
 ---
 
-## Setup
+## Installation
 
-### Step 1: Configure Scripts
+### Method 1: Automated (Recommended)
 
-1. Edit file paths in scripts:
-   - `work-record.applescript`: modify `filePath` variable
-   - `brain-dump.applescript`: modify `folderPath` variable
+```bash
+# Install work-record
+python3 scripts/install.py --tool work-record --path "~/Documents/Work record.md"
 
-2. Save scripts locally (e.g., `~/Scripts/`)
+# Install brain-dump
+python3 scripts/install.py --tool brain-dump --path "~/Documents/brain dump/"
 
-### Step 2: Create Automator Service
+# Install both
+python3 scripts/install.py --tool all --work-record-path "~/Documents/Work record.md" --brain-dump-path "~/Documents/brain dump/"
+```
 
-1. Open Mac Automator app
-2. File → New → Choose "Quick Action"
-3. Configure at the top:
-   - **Workflow receives**: select "no input"
-   - **In**: select "any application"
-4. Find "Run AppleScript" on the left, drag to right workspace
-5. Delete default code, paste script content
-6. Save (e.g., "Save to Work Record")
+Creates `.workflow` bundles in `~/Library/Services/` and refreshes Finder. Then bind a shortcut in System Settings → Keyboard → Keyboard Shortcuts → Services.
 
-### Step 3: Set Keyboard Shortcut
+### Method 2: Manual Setup
 
-1. Open System Settings → Keyboard → Keyboard Shortcuts
-2. Select "Services" on the left, scroll to "General" on the right
-3. Find your saved Quick Action name (expand "General" if needed)
-4. Click "none" or the shortcut area, press your key combination
-5. Close settings, shortcut takes effect immediately
+1. Edit the path variables in the `.applescript` files
+2. Open Automator → New → Quick Action (no input, any application)
+3. Drag "Run AppleScript", paste script content, save
+4. Bind shortcut in System Settings → Keyboard → Keyboard Shortcuts → Services
+
+### Method 3: AI-Assisted
+
+If using Claude Code, trigger the SKILL.md interaction:
+
+```
+/clipboard-to-markdown
+```
+
+Or say trigger phrases like "install clipboard tool" to start the guided setup.
+
+---
+
+## Project Structure
+
+```
+mac-clipboard-to-md/
+├── SKILL.md                   ← AI-assisted install wizard (Claude Code)
+├── scripts/
+│   └── install.py             ← Automated installer
+├── work-record.applescript    ← Silent mode script
+├── brain-dump.applescript     ← Interactive mode script
+├── README.md / .zh.md / .en.md
+└── LICENSE
+```
 
 ---
 
 ## Troubleshooting
 
-### 1. Shortcut not working in Spotlight (Cmd+Space)
+### Shortcut not working in some apps
 
-**Cause**: Spotlight search box is a system modal window that blocks global shortcuts.
+**Cause**: Conflicts or system modal windows.
 
-**Fix**: Press Esc to exit Spotlight, then use the shortcut.
+**Fix**: Use uncommon shortcuts like `Ctrl+Cmd+Shift+V`. Exit Spotlight/spacesaver before using.
 
----
+### `Operation not permitted`
 
-### 2. `Operation not permitted` error in Terminal
+**Cause**: macOS Full Disk Access restrictions.
 
-Error example:
-```
-cat: /Users/.../Work record.md: Operation not permitted
-```
+**Fix**: Add Automator.app in System Settings → Privacy & Security → Full Disk Access, then restart Automator.
 
-**Cause**: macOS "Full Disk Access" restrictions. Terminal (or Automator) lacks permission to access Documents/Downloads folders.
+### Encoding issues
 
-**Fix**:
-1. Open System Settings → Privacy & Security → Full Disk Access
-2. Click lock icon to unlock
-3. Add "Terminal" and "Automator" apps
-4. Restart both apps
-
-Or place notes in locations without special restrictions (e.g., `~/Notes/`).
-
----
-
-### 3. Shortcut not working in some apps
-
-**Possible causes**:
-- **Shortcut conflict**: Some shortcuts may be used by system or other apps
-
-**Suggestion**: Choose uncommon combinations. Check System Settings → Keyboard → Keyboard Shortcuts for occupied shortcuts.
-
-**Another cause**: Some contexts (Spotlight, screensaver, login window) block global shortcuts.
-
----
-
-## Notes
-
-- **Encoding**: Scripts include `export LANG=en_US.UTF-8` to prevent encoding issues
-- **Path**: Ensure paths exist and apps have access permissions
-- **Permissions**: First run may require granting Automator file access
+Scripts include `export LANG=en_US.UTF-8`. Check system locale if issues persist.
 
 ---
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file
+MIT License — see [LICENSE](LICENSE) file
