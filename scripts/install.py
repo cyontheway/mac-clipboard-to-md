@@ -208,6 +208,42 @@ def list_tools():
         print()
 
 
+def interactive_install():
+    """交互模式：无参数时通过终端问答引导安装"""
+    print("\n📋 可用工具：")
+    for name, info in TOOLS.items():
+        print(f"  {name:15s} → {info['description']}")
+
+    choice = input("\n你想安装哪个？（work-record / brain-dump / all）: ").strip().lower()
+
+    tools_to_install = []
+    if choice == "all":
+        tools_to_install = list(TOOLS.keys())
+    elif choice in TOOLS:
+        tools_to_install = [choice]
+    else:
+        print("✗ 无效选择")
+        sys.exit(1)
+
+    install_plan = {}
+    for name in tools_to_install:
+        default_path = TOOLS[name]["placeholder_path"]
+        user_path = input(f"\n{name} 的保存路径（直接回车用默认 {default_path}）: ").strip()
+        if not user_path:
+            user_path = default_path
+        install_plan[name] = user_path
+
+    success = True
+    for name, path in install_plan.items():
+        print(f"\n📦 安装 {name}...")
+        if not install(name, path):
+            success = False
+
+    if success:
+        refresh_services()
+        print(f"\n✅ 安装完成！请在「系统设置 → 键盘 → 键盘快捷键 → 服务」中设置快捷键")
+
+
 def main():
     parser = argparse.ArgumentParser(description="mac-clipboard-to-md 安装器")
     parser.add_argument("--tool", choices=list(TOOLS.keys()) + ["all"],
@@ -223,11 +259,9 @@ def main():
         list_tools()
         return
 
-    if not args.tool and not any([args.tool]):
-        parser.print_help()
-        print("\n请指定 --tool。可用工具：")
-        list_tools()
-        sys.exit(1)
+    if not args.tool and not args.list:
+        interactive_install()
+        return
 
     # 收集要安装的工具和路径
     install_plan = {}

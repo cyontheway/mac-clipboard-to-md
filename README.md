@@ -14,37 +14,32 @@ Quickly save Mac clipboard content to Markdown notes using AppleScript and Autom
 
 Two AppleScript tools to quickly save clipboard content to Markdown notes using macOS Automator.
 
-### 安装方式 | Installation
+## 安装方式 | Installation
 
 | 方式 | 说明 |
 |------|------|
-| **自动安装** | 运行 `scripts/install.py`，自动创建 workflow |
+| **自动安装** | 运行 `scripts/install.py`，带参数或交互式均可 |
 | **手动安装** | 按 [中文文档](./README.zh.md) 步骤手动创建 Automator 快速操作 |
-| **AI 辅助** | 配合 Claude Code 的 [SKILL.md](./SKILL.md) 交互式引导 |
-
----
+| **AI 辅助** | 配合 [SKILL.md](./SKILL.md) 由 Claude Code 交互式引导安装 |
 
 ## 目录结构 | Structure
 
 ```
 mac-clipboard-to-md/
-├── SKILL.md                   ← AI 辅助安装向导
+├── SKILL.md                   ← AI 辅助安装向导（Claude Code）
 ├── scripts/
-│   └── install.py             ← 自动安装器
+│   └── install.py             ← 自动安装器（支持参数/交互双模式）
 ├── work-record.applescript    ← 静默模式脚本
 ├── brain-dump.applescript     ← 交互模式脚本
 ├── README.md / .zh.md / .en.md
+├── CHANGELOG.md
 └── LICENSE
 ```
-
----
 
 ## 语言版本 | Language Versions
 
 - **[中文文档](./README.zh.md)** — 完整的中文使用说明
 - **[English Documentation](./README.en.md)** — Complete English instructions
-
----
 
 ## License
 
